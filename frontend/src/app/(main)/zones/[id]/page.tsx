@@ -4,13 +4,14 @@ import Link from 'next/link';
 export default async function ZoneDetailPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const zoneId = params.id;
+  const { id } = await params;
+  // const zoneId = params.id;
   const { data: zone, error } = await supabase
     .from('zones')
     .select('*')
-    .eq('id', zoneId)
+    .eq('id', id)
     .single();
 
   if (error || !zone) {

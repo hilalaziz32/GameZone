@@ -1,7 +1,11 @@
 import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 
-export default async function ZoneDetailPage({ params }) {
+export default async function ZoneDetailPage({
+  params,
+}: {
+  params: { id: string }
+}) {
   const zoneId = params.id;
   const { data: zone, error } = await supabase
     .from('zones')
@@ -19,7 +23,7 @@ export default async function ZoneDetailPage({ params }) {
             </svg>
           </div>
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Zone Not Found</h2>
-          <p className="text-slate-600 mb-6">The zone you're looking for doesn't exist or has been removed.</p>
+          <p className="text-slate-600 mb-6">The zone you&apos;re looking for doesn&apos;t exist or has been removed.</p>
           <Link href="/zones" className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors duration-200">
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -32,7 +36,7 @@ export default async function ZoneDetailPage({ params }) {
   }
 
   // Helper function to format time
-  const formatTime = (time) => {
+  const formatTime = (time: string | undefined) => {
     if (!time) return 'Not specified';
     return new Date(`2000-01-01T${time}`).toLocaleTimeString([], { 
       hour: '2-digit', 

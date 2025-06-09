@@ -11,6 +11,19 @@ SUPABASE_API_KEY = os.getenv("SUPABASE_API_KEY")
 
 app = FastAPI()
 
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/yourdb")
+
+
+@app.on_event("startup")
+async def startup():
+    app.state.db = await asyncpg.create_pool(DATABASE_URL)
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await app.state.db.close()
+
+
 class UserAuth(BaseModel):
     email: str
     password: str

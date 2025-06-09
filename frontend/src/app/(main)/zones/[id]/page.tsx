@@ -9,7 +9,7 @@ export default async function ZoneDetailPage({
   const { id } = await params;
   // const zoneId = params.id;
   const { data: zone, error } = await supabase
-    .from('zones')
+    .from('zone_cards')
     .select('*')
     .eq('id', id)
     .single();
@@ -77,7 +77,7 @@ export default async function ZoneDetailPage({
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <span className="text-slate-900 font-medium">{zone.name}</span>
+            <span className="text-slate-900 font-medium">{zone.zone_name}</span>
           </nav>
 
           {/* Zone Header */}
@@ -92,9 +92,8 @@ export default async function ZoneDetailPage({
                 </div>
                 <div>
                   <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent">
-                    {zone.name}
+                    {zone.zone_name}
                   </h1>
-                  <p className="text-lg text-slate-600 mt-1">Zone ID: #{zone.id}</p>
                 </div>
               </div>
               
@@ -194,7 +193,7 @@ export default async function ZoneDetailPage({
                     </div>
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-1">Region</h4>
-                      <p className="text-slate-600">Region #{zone.region_id.name}</p>
+                      <p className="text-slate-600">{zone.region_name}</p>
                     </div>
                   </div>
                 </div>
@@ -208,21 +207,11 @@ export default async function ZoneDetailPage({
                     </div>
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-1">Owner</h4>
-                      <p className="text-slate-600">User #{zone.owner_user_id}</p>
+                      <p className="text-slate-600">{zone.owner_email}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center mt-1">
-                      <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Zone ID</h4>
-                      <p className="text-slate-600">#{zone.id}</p>
-                    </div>
-                  </div>
+                
                 </div>
               </div>
             </div>

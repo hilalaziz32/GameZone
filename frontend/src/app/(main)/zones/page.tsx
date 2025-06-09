@@ -2,11 +2,11 @@ import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 
 export default async function ZonesPage() {
-  // Fetch data on server (SSR)
+  // 2. Fetch from your view
   const { data: zones, error } = await supabase
-    .from('zones')
+    .from('zone_cards')
     .select('*')
-    .order('name', { ascending: true });
+    .order('zone_name', { ascending: true });
 
   if (error) {
     throw new Error('Failed to load zones');
@@ -32,7 +32,7 @@ export default async function ZonesPage() {
         </div>
       </div>
 
-      {/* Main Content */}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Stats Bar */}
         <div className="mb-8 bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
@@ -51,27 +51,27 @@ export default async function ZonesPage() {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {zones.map((zone) => (
-            <Link 
-              key={zone.id} 
-              href={`/zones/${zone.id}`}
+          {zones.map((zone, idx) => (
+            <Link
+              key={idx}
+              href={`/zones/${encodeURIComponent(zone.id)}`}
               className="group block transform transition-all duration-300 hover:scale-105 hover:-translate-y-2"
             >
               <div className="relative h-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden group-hover:shadow-2xl group-hover:shadow-blue-500/25 transition-all duration-300">
                 {/* Gradient Top Bar */}
                 <div className="h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
-                
+
                 {/* Card Content */}
                 <div className="p-6 space-y-4">
                   {/* Zone Header */}
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
-                        {zone.name}
+                        {zone.zone_name}
                       </h3>
                       <div className="mt-2 flex items-center space-x-2">
                         <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span className="text-sm text-slate-500">Zone #{zone.id}</span>
+                        <span className="text-sm text-slate-500">{zone.region_name}</span>
                       </div>
                     </div>
                     <div className="ml-4 p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">
@@ -92,18 +92,20 @@ export default async function ZonesPage() {
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center">
+                        {/* Region */}
                         <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
                         </svg>
                       </div>
                       <div>
                         <p className="text-xs text-slate-500 uppercase tracking-wide font-medium">Region</p>
-                        <p className="text-sm font-semibold text-slate-700">{zone.region_id}</p>
+                        <p className="text-sm font-semibold text-slate-700">{zone.region_name}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center space-x-3">
                       <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
+                        {/* Address */}
                         <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -113,6 +115,39 @@ export default async function ZonesPage() {
                         <p className="text-xs text-slate-500 uppercase tracking-wide font-medium">Address</p>
                         <p className="text-sm font-semibold text-slate-700 line-clamp-1">
                           {zone.address || 'Address not specified'}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                      <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-lg flex items-center justify-center">
+                        {/* Owner */}
+                        <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A9.969 9.969 0 0112 15c2.657 0 5.065.977 6.879 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 uppercase tracking-wide font-medium">Owner</p>
+                        <p className="text-sm font-semibold text-slate-700 line-clamp-1">
+                          {zone.owner_email}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                      <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg flex items-center justify-center">
+                        {/* Times */}
+                        <svg className="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3" />
+                          <circle cx={12} cy={12} r={10} stroke="currentColor" strokeWidth={2} fill="none" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 uppercase tracking-wide font-medium">Open - Close</p>
+                        <p className="text-sm font-semibold text-slate-700">
+                          {(zone.open_time && zone.close_time)
+                            ? `${zone.open_time.slice(0, 5)} - ${zone.close_time.slice(0, 5)}`
+                            : 'Not specified'}
                         </p>
                       </div>
                     </div>
@@ -142,14 +177,7 @@ export default async function ZonesPage() {
         {/* Empty State */}
         {zones.length === 0 && (
           <div className="text-center py-12">
-            <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl flex items-center justify-center">
-              <svg className="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-2">No zones found</h3>
-            <p className="text-slate-600">Create your first zone to get started.</p>
+            {/* ...empty state... */}
           </div>
         )}
       </div>

@@ -1,6 +1,10 @@
 import os
 from supabase import create_client, Client
 
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 # Load environment variables
 SUPABASE_URL = os.getenv('SUPABASE_URL')
 SUPABASE_API_KEY = os.getenv('SUPABASE_API_KEY')

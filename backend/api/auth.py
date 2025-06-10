@@ -1,63 +1,35 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-import httpx
-import os
-from dotenv import load_dotenv
+from utils.db_connector import get_supabase_client
 
-load_dotenv()
-
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_API_KEY = os.getenv("SUPABASE_API_KEY")
-
-app = FastAPI()
-
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/yourdb")
-
-
-@app.on_event("startup")
-async def startup():
-    app.state.db = await asyncpg.create_pool(DATABASE_URL)
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    await app.state.db.close()
-
+router = APIRouter()
 
 class UserAuth(BaseModel):
     email: str
     password: str
 
-@app.post("/signup")
+@router.post("/signup")
 async def signup(user: UserAuth):
-    url = f"{SUPABASE_URL}/auth/v1/signup"
-    headers = {
-        "apikey": SUPABASE_API_KEY,
-        "Content-Type": "application/json"
-    }
-    payload = {
+    supabase = get_supabase_client()
+    result = supabase.auth.sign_up({
         "email": user.email,
         "password": user.password
-    }
-    async with httpx.AsyncClient() as client:
-        r = await client.post(url, json=payload, headers=headers)
-        if r.status_code != 200 and r.status_code != 201:
-            raise HTTPException(status_code=400, detail=r.json())
-        return r.json()
+    })
 
-@app.post("/signin")
+    if result.get("error"):
+        raise HTTPException(status_code=400, detail=result["error"]["message"])
+
+    return result["data"]
+
+@router.post("/signin")
 async def signin(user: UserAuth):
-    url = f"{SUPABASE_URL}/auth/v1/token?grant_type=password"
-    headers = {
-        "apikey": SUPABASE_API_KEY,
-        "Content-Type": "application/json"
-    }
-    payload = {
+    supabase = get_supabase_client()
+    result = supabase.auth.sign_in_with_password({
         "email": user.email,
         "password": user.password
-    }
-    async with httpx.AsyncClient() as client:
-        r = await client.post(url, json=payload, headers=headers)
-        if r.status_code != 200 and r.status_code != 201:
-            raise HTTPException(status_code=400, detail=r.json())
-        return r.json()  
+    })
+
+    if result.get("error"):
+        raise HTTPException(status_code=400, detail=result["error"]["message"])
+
+    return result["data"]

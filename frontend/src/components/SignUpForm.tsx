@@ -17,7 +17,7 @@ const SignUpForm = () => {
     const result = await signUp(formData)
 
     if(result.status === "success") {
-      router.push("/login")
+      router.push("/check-email")
     } else {
       setError(result.status)
     }
@@ -25,8 +25,8 @@ const SignUpForm = () => {
     setLoading(false);
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
+ 
+      <form onSubmit={handleSubmit} className="w-lg flex flex-col gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-600">
             Username
@@ -36,7 +36,7 @@ const SignUpForm = () => {
             placeholder="Username"
             id="username"
             name="username"
-            className="mt-1 w-full px-4 p-2  h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
+            className="mt-1 w-full px-4 p-2 h-12 rounded-md border border-gray-500 bg-white text-sm text-gray-700"
           />
         </div>
         <div>
@@ -48,7 +48,7 @@ const SignUpForm = () => {
             placeholder="Email"
             id="Email"
             name="email"
-            className="mt-1 w-full px-4 p-2  h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
+            className="mt-1 w-full px-4 p-2  h-12 rounded-md border border-gray-500 bg-white text-sm text-gray-700"
           />
         </div>
         <div>
@@ -60,7 +60,7 @@ const SignUpForm = () => {
             placeholder="Password"
             name="password"
             id="password"
-            className="mt-1 w-full px-4 p-2  h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
+            className="mt-1 w-full px-4 p-2  h-12 rounded-md border border-gray-500 bg-white text-sm text-gray-700"
           />
         </div>
         <div className="mt-4">
@@ -68,7 +68,7 @@ const SignUpForm = () => {
         </div>
         {error && <p className="text-red-500">{error}</p>}
       </form>
-    </div>
+ 
   );
 };
 

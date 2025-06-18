@@ -101,5 +101,5 @@ export async function signOut() {
     }
 
     revalidatePath("/", "layout");
-    redirect("/login");
+    redirect("/signin");
 }

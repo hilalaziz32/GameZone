@@ -156,7 +156,7 @@ export default async function ZonesPage() {
                   {/* Action Button */}
                   <div className="pt-4 border-t border-slate-100">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-500">Click to view details</span>
+                      {/* <span className="text-sm text-slate-500">Click to view details</span> */}
                       <div className="flex items-center space-x-2 text-blue-600 group-hover:text-blue-700">
                         <span className="text-sm font-medium">View Details</span>
                         <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">

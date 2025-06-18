@@ -1,4 +1,5 @@
 // import ClientComponent from "@/components/ClientComponent";
+import Footer from "@/components/Footer";
 import ZonesPage from "./(main)/zones/page";
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
     <div>
       {/* <ClientComponent /> */}
       <ZonesPage />
+      <Footer/>
     </div>
   );
 }

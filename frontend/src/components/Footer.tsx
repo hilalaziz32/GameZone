@@ -125,7 +125,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 bg-clip-text text-transparent">
-                    Fraggix
+                    ClashForge
                   </h3>
                   <p className="text-gray-400 text-sm">Pro Esports Platform</p>
                 </div>

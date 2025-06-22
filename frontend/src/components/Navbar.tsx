@@ -25,7 +25,7 @@ const Navbar = async () => {
                 <div className="absolute -inset-1 bg-blue-600/20 rounded-full blur opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-blue-800 transition-all duration-200">
-                Fraggix
+                ClashForge
               </span>
             </div>
           </Link>
